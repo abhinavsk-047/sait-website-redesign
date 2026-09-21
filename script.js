@@ -1,293 +1,368 @@
-const root = document.documentElement;
-const body = document.body;
-const $ = (sel, parent = document) => parent.querySelector(sel);
-const $$ = (sel, parent = document) => [...parent.querySelectorAll(sel)];
+document.addEventListener("DOMContentLoaded", () => {
+  const body = document.body;
+  const header = document.querySelector(".site-header");
+  const navLinks = document.querySelector(".nav-links");
+  const menuBtn = document.querySelector(".menu-btn");
+  const themeBtn = document.querySelector("[data-theme-toggle]");
+  const toast = document.querySelector("#toast");
+  const command = document.querySelector("#command");
+  const commandInput = document.querySelector("#commandInput");
+  const commandList = document.querySelector("#commandList");
+  let toastTimer;
 
-// ---------------------------
-// Theme
-// ---------------------------
-const storedTheme = localStorage.getItem('sait-theme');
-if (storedTheme) root.dataset.theme = storedTheme;
-const themeButton = $('#themeButton');
-function syncThemeIcon(){ themeButton.textContent = root.dataset.theme === 'light' ? '☾' : '☼'; }
-syncThemeIcon();
-themeButton.addEventListener('click', () => {
-  root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
-  localStorage.setItem('sait-theme', root.dataset.theme);
-  syncThemeIcon();
-  showToast(`${root.dataset.theme === 'light' ? 'Light' : 'Dark'} mode enabled`);
-});
+  const page = document.body.dataset.page || "";
 
-// ---------------------------
-// Header + scroll progress
-// ---------------------------
-const header = $('#header');
-const progress = $('#pageProgress');
-function updateScrollUI(){
-  header.classList.toggle('scrolled', window.scrollY > 18);
-  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-  progress.style.width = `${scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0}%`;
-}
-window.addEventListener('scroll', updateScrollUI, {passive:true});
-updateScrollUI();
-
-// ---------------------------
-// Mobile menu
-// ---------------------------
-const menuButton = $('#menuButton');
-const nav = $('#primaryNav');
-menuButton.addEventListener('click', () => {
-  const open = nav.classList.toggle('open');
-  menuButton.setAttribute('aria-expanded', open);
-});
-$$('.nav a').forEach(a => a.addEventListener('click', () => {
-  nav.classList.remove('open');
-  menuButton.setAttribute('aria-expanded', 'false');
-}));
-
-// ---------------------------
-// Cursor glow
-// ---------------------------
-const cursorGlow = $('#cursorGlow');
-window.addEventListener('pointermove', (e) => {
-  if (window.innerWidth < 1000) return;
-  cursorGlow.style.opacity = '1';
-  cursorGlow.style.left = `${e.clientX}px`;
-  cursorGlow.style.top = `${e.clientY}px`;
-}, {passive:true});
-window.addEventListener('pointerleave', () => cursorGlow.style.opacity = '0');
-
-// ---------------------------
-// Reveal-on-scroll
-// ---------------------------
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      revealObserver.unobserve(entry.target);
+  // Theme
+  const storedTheme = localStorage.getItem("sait-theme");
+  if (storedTheme === "light") body.dataset.theme = "light";
+  function refreshThemeIcon() {
+    if (themeBtn) themeBtn.textContent = body.dataset.theme === "light" ? "☾" : "☀";
+  }
+  refreshThemeIcon();
+  themeBtn?.addEventListener("click", () => {
+    if (body.dataset.theme === "light") {
+      delete body.dataset.theme;
+      localStorage.setItem("sait-theme", "dark");
+    } else {
+      body.dataset.theme = "light";
+      localStorage.setItem("sait-theme", "light");
     }
+    refreshThemeIcon();
   });
-}, {threshold:.12});
-$$('.reveal').forEach(el => revealObserver.observe(el));
 
-// ---------------------------
-// Animated counters
-// ---------------------------
-const counterObserver = new IntersectionObserver((entries, observer) => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    const el = entry.target;
-    const target = el.dataset.counter;
-    if (target === '∞') return;
-    const end = Number(target);
-    const start = performance.now();
-    const duration = 1100;
-    function tick(now){
-      const p = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(end * eased).toLocaleString();
-      if (p < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-    observer.unobserve(el);
+  // Nav
+  menuBtn?.addEventListener("click", () => {
+    const open = navLinks.classList.toggle("open");
+    menuBtn.setAttribute("aria-expanded", String(open));
   });
-}, {threshold:.6});
-$$('[data-counter]').forEach(el => counterObserver.observe(el));
-
-// ---------------------------
-// Interactive filters
-// ---------------------------
-function filterGroup(buttonSelector, itemSelector, dataName){
-  $$(buttonSelector).forEach(button => {
-    button.addEventListener('click', () => {
-      const value = button.dataset[dataName];
-      $$(buttonSelector).forEach(b => b.classList.toggle('active', b === button));
-      $$(itemSelector).forEach(item => {
-        const match = value === 'all' || item.dataset[dataName.replace('Filter','Category').replace('team','team')] === value;
-        item.classList.toggle('hidden', !match);
-      });
+  document.querySelectorAll(".nav-links a").forEach(a => {
+    a.addEventListener("click", () => {
+      navLinks?.classList.remove("open");
+      menuBtn?.setAttribute("aria-expanded", "false");
     });
   });
-}
-
-// Teams
-$$('[data-team-filter]').forEach(button => {
-  button.addEventListener('click', () => {
-    const value = button.dataset.teamFilter;
-    $$('[data-team-filter]').forEach(b => b.classList.toggle('active', b === button));
-    $$('#peopleGrid .person-card').forEach(card => card.classList.toggle('hidden', value !== 'all' && card.dataset.team !== value));
-  });
-});
-// Events
-$$('[data-event-filter]').forEach(button => {
-  button.addEventListener('click', () => {
-    const value = button.dataset.eventFilter;
-    $$('[data-event-filter]').forEach(b => b.classList.toggle('active', b === button));
-    $$('[data-event-category]').forEach(card => card.classList.toggle('hidden', value !== 'all' && card.dataset.eventCategory !== value));
-  });
-});
-// Hall of fame
-$$('[data-hall-filter]').forEach(button => {
-  button.addEventListener('click', () => {
-    const value = button.dataset.hallFilter;
-    $$('[data-hall-filter]').forEach(b => b.classList.toggle('active', b === button));
-    $$('#hallGrid .hall-card').forEach(card => card.classList.toggle('hidden', value !== 'all' && card.dataset.hallCategory !== value));
-  });
-});
-
-// ---------------------------
-// Modal system
-// ---------------------------
-const modalLayer = $('#modalLayer');
-const modalHeading = $('#modalHeading');
-const modalBody = $('#modalBody');
-function openModal(title, message){
-  modalHeading.textContent = title;
-  modalBody.textContent = message;
-  modalLayer.classList.add('open');
-  modalLayer.setAttribute('aria-hidden','false');
-  body.style.overflow = 'hidden';
-}
-function closeModal(){
-  modalLayer.classList.remove('open');
-  modalLayer.setAttribute('aria-hidden','true');
-  body.style.overflow = '';
-}
-$$('[data-close-modal]').forEach(el => el.addEventListener('click', closeModal));
-$$('.event-open').forEach(btn => btn.addEventListener('click', () => openModal(btn.dataset.eventName, 'Prototype interaction ready. Connect this card to the real SAIT event database, registration URL or event detail page in the final build.')));
-$$('.person-open').forEach(btn => btn.addEventListener('click', () => openModal(btn.dataset.person, 'This member/team profile is a prototype. Replace this with verified role, batch, skills, social links and contact information when official data is available.')));
-
-// ---------------------------
-// Command palette / search
-// ---------------------------
-const commandLayer = $('#commandLayer');
-const commandInput = $('#commandInput');
-const commandResults = $('#commandResults');
-const commands = [
-  {title:'About SAIT', meta:'Vision · Mission · History', href:'#about'},
-  {title:'People & Teams', meta:'Executive · Tech · Media · Events · PR', href:'#people'},
-  {title:'Events & Activities', meta:'Upcoming · Archive · Filters', href:'#events'},
-  {title:'Placements & Careers', meta:'Stats · Pathways · Resources', href:'#careers'},
-  {title:'Alumni', meta:'Spotlights · Batches · Achievements', href:'#alumni'},
-  {title:'Hall of Fame', meta:'Hackathons · Papers · Academic', href:'#hall'},
-  {title:'Student Activity Logger', meta:'Submit · Track · Leaderboard', href:'#activity'},
-  {title:'Notifications', meta:'Deadlines · Updates · Notices', href:'#notifications'},
-  {title:'Contact SAIT', meta:'Questions · Collaborations · Proposals', href:'#contact'}
-];
-let selectedCommand = 0;
-function renderCommands(query=''){
-  const q = query.trim().toLowerCase();
-  const filtered = commands.filter(c => !q || `${c.title} ${c.meta}`.toLowerCase().includes(q));
-  if (!filtered.length){ commandResults.innerHTML = '<div class="command-item"><div><b>No results</b><small>Try another search</small></div></div>'; return; }
-  selectedCommand = Math.min(selectedCommand, filtered.length - 1);
-  commandResults.innerHTML = filtered.map((c,i)=>`<div class="command-item ${i===selectedCommand?'selected':''}" data-command-index="${i}"><div><b>${c.title}</b><small>${c.meta}</small></div><span>↗</span></div>`).join('');
-  $$('.command-item[data-command-index]', commandResults).forEach((item,i)=>item.addEventListener('click',()=>goCommand(filtered[i])));
-  function goCommand(cmd){ commandLayer.classList.remove('open'); body.style.overflow=''; window.location.hash=cmd.href.slice(1); }
-}
-function openCommand(){ commandLayer.classList.add('open'); commandLayer.setAttribute('aria-hidden','false'); body.style.overflow='hidden'; commandInput.value=''; renderCommands(); setTimeout(()=>commandInput.focus(),20); }
-function closeCommand(){ commandLayer.classList.remove('open'); commandLayer.setAttribute('aria-hidden','true'); body.style.overflow=''; }
-$('#searchButton').addEventListener('click', openCommand);
-$('#commandHint').addEventListener('click', openCommand);
-$$('[data-close-command]').forEach(el => el.addEventListener('click', closeCommand));
-commandInput.addEventListener('input', () => { selectedCommand=0; renderCommands(commandInput.value); });
-
-document.addEventListener('keydown', (event) => {
-  const macLike = navigator.platform.toUpperCase().includes('MAC');
-  if ((macLike ? event.metaKey : event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); openCommand(); }
-  if (event.key === 'Escape') { closeModal(); closeCommand(); }
-  if (commandLayer.classList.contains('open') && ['ArrowDown','ArrowUp','Enter'].includes(event.key)) {
-    const q = commandInput.value.trim().toLowerCase();
-    const filtered = commands.filter(c => !q || `${c.title} ${c.meta}`.toLowerCase().includes(q));
-    if (!filtered.length) return;
-    if (event.key === 'ArrowDown') selectedCommand=(selectedCommand+1)%filtered.length;
-    if (event.key === 'ArrowUp') selectedCommand=(selectedCommand-1+filtered.length)%filtered.length;
-    if (event.key === 'Enter') { commandLayer.classList.remove('open'); body.style.overflow=''; window.location.hash=filtered[selectedCommand].href.slice(1); }
-    renderCommands(q);
-    event.preventDefault();
+  function updateHeader() {
+    header?.classList.toggle("scrolled", window.scrollY > 10);
   }
-});
+  window.addEventListener("scroll", updateHeader, {passive:true});
+  updateHeader();
 
-// ---------------------------
-// Activity logger — local demo persistence
-// ---------------------------
-const activityForm = $('#activityForm');
-const activityFeed = $('#activityFeed');
-const emptyFeed = $('#emptyFeed');
-const activityCount = $('#activityCount');
-const progressValue = $('#progressValue');
-const ringProgress = $('#ringProgress');
-const storageKey = 'sait-activities';
-let activities = JSON.parse(localStorage.getItem(storageKey) || '[]');
-function iconForCategory(category){ return ({Technical:'⌘',Academic:'◇',Community:'✦',Creative:'✳'})[category] || '•'; }
-function renderActivities(){
-  activityCount.textContent = activities.length;
-  const pct = Math.min(100, activities.length * 20);
-  progressValue.textContent = `${pct}%`;
-  ringProgress.style.strokeDashoffset = `${307.88 - (307.88 * pct / 100)}`;
-  if (!activities.length) {
-    emptyFeed.style.display='block';
-    [...activityFeed.querySelectorAll('.feed-item')].forEach(e=>e.remove());
-    return;
-  }
-  emptyFeed.style.display='none';
-  [...activityFeed.querySelectorAll('.feed-item')].forEach(e=>e.remove());
-  activities.slice().reverse().forEach(item=>{
-    const div=document.createElement('article');
-    div.className='feed-item';
-    div.innerHTML=`<div class="feed-icon">${iconForCategory(item.category)}</div><div><h4>${escapeHTML(item.title)}</h4><p>${escapeHTML(item.student)} · ${escapeHTML(item.category)} · ${escapeHTML(item.date)}</p></div><span class="status-badge">SUBMITTED</span>`;
-    activityFeed.appendChild(div);
+  // Active page link
+  document.querySelectorAll(".nav-links a[data-page]").forEach(a => {
+    a.classList.toggle("active", a.dataset.page === page);
   });
-}
-function escapeHTML(str){ return String(str).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
-activityForm.addEventListener('submit', (e)=>{
-  e.preventDefault();
-  const data = new FormData(activityForm);
-  const item = Object.fromEntries(data.entries());
-  activities.push(item);
-  localStorage.setItem(storageKey, JSON.stringify(activities));
-  activityForm.reset();
+
+  // Reveal
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {threshold:.12});
+  document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
+
+  // Counter
+  document.querySelectorAll("[data-counter]").forEach(el => {
+    const target = Number(el.dataset.counter);
+    const suffix = el.dataset.suffix || "";
+    let done = false;
+    const observer = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting || done) return;
+      done = true;
+      const start = performance.now();
+      const duration = 950;
+      function tick(t) {
+        const p = Math.min((t-start)/duration,1);
+        const eased = 1-Math.pow(1-p,3);
+        el.textContent = Math.round(target*eased) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      observer.disconnect();
+    });
+    observer.observe(el);
+  });
+
+  // Cursor glow
+  const glow = document.createElement("div");
+  glow.className = "cursor-glow";
+  body.appendChild(glow);
+  if (window.innerWidth > 900) {
+    window.addEventListener("pointermove", e => {
+      glow.style.opacity = "1";
+      glow.style.left = e.clientX + "px";
+      glow.style.top = e.clientY + "px";
+    }, {passive:true});
+    window.addEventListener("pointerleave", () => glow.style.opacity = "0");
+  }
+
+  // Subtle hero tilt
+  const tilt = document.querySelector("[data-tilt]");
+  if (tilt && window.innerWidth > 900 && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    tilt.addEventListener("pointermove", e => {
+      const r = tilt.getBoundingClientRect();
+      const x = (e.clientX-r.left)/r.width-.5;
+      const y = (e.clientY-r.top)/r.height-.5;
+      tilt.style.transform = `perspective(1000px) rotateX(${(-y*4).toFixed(2)}deg) rotateY(${(x*5).toFixed(2)}deg) rotateZ(2deg)`;
+    });
+    tilt.addEventListener("pointerleave", () => tilt.style.transform = "rotateZ(3deg)");
+  }
+
+  // Command palette
+  const closeCommand = () => {
+    command?.classList.remove("open");
+    body.classList.remove("page-lock");
+  };
+  const openCommand = () => {
+    command?.classList.add("open");
+    body.classList.add("page-lock");
+    commandInput?.focus();
+    renderCommand("");
+  };
+  document.addEventListener("keydown", e => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      openCommand();
+    }
+    if (e.key === "Escape") {
+      closeCommand();
+      closeModal();
+    }
+  });
+  document.querySelectorAll("[data-command-open]").forEach(el => el.addEventListener("click", openCommand));
+  command?.addEventListener("click", e => { if (e.target.dataset.closeCommand !== undefined) closeCommand(); });
+
+  const commands = [
+    ["Home","index.html","⌂"],["About","about.html","01"],["People & Teams","people.html","02"],
+    ["Events","events.html","03"],["Placements","placements.html","04"],["Alumni","alumni.html","05"],
+    ["Hall of Fame","hall-of-fame.html","06"],["Activity Logger","activity.html","07"],
+    ["Notifications","notifications.html","08"],["Notes & Resources","notes.html","09"],["Contact","contact.html","10"]
+  ];
+  function renderCommand(q="") {
+    if (!commandList) return;
+    const needle = q.trim().toLowerCase();
+    const out = commands.filter(c => !needle || c[0].toLowerCase().includes(needle))
+      .map(c => `<a class="command-item" href="${c[1]}"><div><strong>${c[0]}</strong><small>${c[1]}</small></div><span class="command-key">${c[2]}</span></a>`).join("");
+    commandList.innerHTML = out || `<div class="command-item"><div><strong>No results</strong><small>Try “events”, “people”, or “notes”.</small></div></div>`;
+  }
+  commandInput?.addEventListener("input", e => renderCommand(e.target.value));
+  renderCommand();
+
+  // Toast
+  window.saitToast = msg => {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2400);
+  };
+
+  // Modal helpers
+  const modal = document.querySelector("#modal");
+  const closeModal = () => {
+    modal?.classList.remove("open");
+    body.classList.remove("page-lock");
+  };
+  document.querySelectorAll("[data-close-modal]").forEach(el => el.addEventListener("click", closeModal));
+  function openModal(title, subtitle, image, bodyText, cta) {
+    if (!modal) return;
+    modal.innerHTML = `
+      <div class="modal-bg" data-close-modal></div>
+      <div class="modal-card">
+        ${image ? `<div class="modal-media"><img src="${image}" alt=""></div>` : ""}
+        <button class="modal-close" data-close-modal>×</button>
+        <div class="modal-content">
+          <div class="kicker">${subtitle || "SAIT / DETAIL"}</div>
+          <h2>${title}</h2>
+          <p>${bodyText}</p>
+          ${cta || ""}
+        </div>
+      </div>`;
+    modal.classList.add("open");
+    body.classList.add("page-lock");
+    modal.querySelectorAll("[data-close-modal]").forEach(el => el.addEventListener("click", closeModal));
+  }
+
+  // Render utility functions
+  function eventCard(e, small=false) {
+    return `<article class="event-card reveal">
+      <div class="event-image"><img src="${e.image}" alt="" loading="lazy"><span class="badge">${e.category}</span></div>
+      <div class="event-info">
+        <div class="event-row"><span>${e.date} · ${e.time}</span><span>${e.status}</span></div>
+        <h3>${e.title}</h3>
+        <p>${e.desc}</p>
+        <div class="event-foot"><span class="tag">${e.venue}</span><button class="btn small ghost" data-event-id="${e.id}">View details ↗</button></div>
+      </div>
+    </article>`;
+  }
+
+  function personCard(p) {
+    return `<article class="person-card reveal" data-person-type="${p.type}">
+      <div class="person-photo"><img src="${p.photo}" alt="${p.name}" loading="lazy">
+        <div class="person-label"><span>${p.role}</span><span>${p.type}</span></div>
+      </div>
+      <div class="person-body">
+        <h3>${p.name}</h3>
+        <p>${p.team}<br>${p.bio}</p>
+        <div class="person-links"><button class="btn small ghost" data-person-id="${p.id}">Profile ↗</button></div>
+      </div>
+    </article>`;
+  }
+
+  // Events render
+  const eventsTarget = document.querySelector("[data-events]");
+  if (eventsTarget) {
+    const filterTarget = document.querySelector("[data-event-filters]");
+    const cats = ["ALL", ...new Set(SAIT_DATA.events.map(e => e.category))];
+    if (filterTarget) filterTarget.innerHTML = cats.map((c,i)=>`<button class="filter-btn ${i===0?"active":""}" data-filter="${c}">${c}</button>`).join("");
+    const render = filter => {
+      eventsTarget.innerHTML = SAIT_DATA.events.filter(e => filter==="ALL" || e.category===filter).map(eventCard).join("");
+      wireEvents();
+      eventsTarget.querySelectorAll(".reveal").forEach(el=>el.classList.add("visible"));
+    };
+    const wireEvents = () => eventsTarget.querySelectorAll("[data-event-id]").forEach(btn => btn.addEventListener("click",()=>{
+      const e=SAIT_DATA.events.find(x=>x.id===btn.dataset.eventId);
+      openModal(e.title, `${e.category} · ${e.date}`, e.image, `${e.desc} <br><br><b>Venue:</b> ${e.venue}<br><b>Time:</b> ${e.time}<br><b>Status:</b> ${e.status}`, `<a class="btn primary" href="contact.html">Get updates ↗</a>`);
+    }));
+    filterTarget?.addEventListener("click",e=>{
+      if(!e.target.dataset.filter)return;
+      filterTarget.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+      e.target.classList.add("active");
+      render(e.target.dataset.filter);
+    });
+    render("ALL");
+  }
+
+  // People render
+  const peopleTarget = document.querySelector("[data-people]");
+  if (peopleTarget) {
+    const filterTarget = document.querySelector("[data-people-filters]");
+    const cats=["ALL","OFFICIAL","FACULTY","STUDENT"];
+    if(filterTarget)filterTarget.innerHTML=cats.map((c,i)=>`<button class="filter-btn ${i===0?"active":""}" data-person-filter="${c}">${c}</button>`).join("");
+    const render = filter => {
+      peopleTarget.innerHTML=SAIT_DATA.people.filter(p=>filter==="ALL"||p.type===filter.toLowerCase()).map(personCard).join("");
+      peopleTarget.querySelectorAll("[data-person-id]").forEach(btn=>btn.addEventListener("click",()=>{
+        const p=SAIT_DATA.people.find(x=>x.id===btn.dataset.personId);
+        openModal(p.name,p.role,p.photo,`${p.bio}<br><br><b>Area:</b> ${p.team}<br><span class="dim">Sample profile — replace with official SAIT directory data.</span>`);
+      }));
+      peopleTarget.querySelectorAll(".reveal").forEach(el=>el.classList.add("visible"));
+    };
+    filterTarget?.addEventListener("click",e=>{
+      if(!e.target.dataset.personFilter)return;
+      filterTarget.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+      e.target.classList.add("active");
+      render(e.target.dataset.personFilter);
+    });
+    render("ALL");
+  }
+
+  // Alumni render
+  const alumniTarget=document.querySelector("[data-alumni]");
+  if(alumniTarget){
+    alumniTarget.innerHTML=SAIT_DATA.alumni.map(a=>`
+      <article class="alumni-card reveal">
+        <img src="${a.photo}" alt="${a.name}" loading="lazy">
+        <div class="body">
+          <div class="meta-line"><span>BATCH ${a.batch}</span><span>${a.highlight}</span></div>
+          <div class="quote">“${a.quote}”</div>
+          <div class="small">${a.name} · ${a.role}</div>
+        </div>
+      </article>`).join("");
+    alumniTarget.querySelectorAll(".reveal").forEach(el=>el.classList.add("visible"));
+  }
+
+  // Hall render
+  const hallTarget=document.querySelector("[data-hall]");
+  if(hallTarget){
+    hallTarget.innerHTML=SAIT_DATA.hall.map(h=>`
+      <article class="hall-item reveal">
+        <div class="hall-year">${h.year}</div>
+        <div><span class="tag">${h.tag}</span><h3>${h.title}</h3><p>${h.meta}</p></div>
+        <div class="hall-arrow">↗</div>
+      </article>`).join("");
+    hallTarget.querySelectorAll(".reveal").forEach(el=>el.classList.add("visible"));
+  }
+
+  // Notifications render
+  const noticeTarget=document.querySelector("[data-notifications]");
+  if(noticeTarget){
+    const filterTarget=document.querySelector("[data-notice-filters]");
+    const cats=["ALL",...new Set(SAIT_DATA.notifications.map(n=>n.tag))];
+    if(filterTarget)filterTarget.innerHTML=cats.map((c,i)=>`<button class="filter-btn ${i===0?"active":""}" data-notice-filter="${c}">${c}</button>`).join("");
+    const render=filter=>{
+      noticeTarget.innerHTML=SAIT_DATA.notifications.filter(n=>filter==="ALL"||n.tag===filter).map(n=>`
+        <article class="notice reveal">
+          <div class="notice-date">${n.date}</div>
+          <div><span class="tag">${n.tag}</span><h3>${n.title}</h3><p>${n.body}</p></div>
+          ${n.new?'<span class="new-pill">NEW</span>':''}
+        </article>`).join("");
+      noticeTarget.querySelectorAll(".reveal").forEach(el=>el.classList.add("visible"));
+    };
+    filterTarget?.addEventListener("click",e=>{
+      if(!e.target.dataset.noticeFilter)return;
+      filterTarget.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+      e.target.classList.add("active");render(e.target.dataset.noticeFilter);
+    });
+    render("ALL");
+  }
+
+  // Activity logger
+  const activityForm=document.querySelector("#activityForm");
+  const activityList=document.querySelector("#activityList");
+  const activityRing=document.querySelector("#activityRingValue");
+  const storageKey="sait-activity-v1";
+  const getActivities=()=>JSON.parse(localStorage.getItem(storageKey)||"[]");
+  const renderActivities=()=>{
+    if(!activityList)return;
+    const arr=getActivities();
+    activityList.innerHTML=(arr.length?arr:[{title:"No submissions yet",type:"Add your first activity above",status:"pending"}]).slice(0,6).map(a=>`
+      <div class="activity-row">
+        <div><strong>${a.title}</strong><small>${a.type}${a.date?" · "+a.date:""}</small></div>
+        <span class="status ${a.status}">${(a.status||"pending").toUpperCase()}</span>
+      </div>`).join("");
+    const verified=arr.filter(a=>a.status==="verified").length;
+    if(activityRing) activityRing.textContent = Math.min(99, 40+verified*12)+"%";
+  };
+  activityForm?.addEventListener("submit",e=>{
+    e.preventDefault();
+    const f=new FormData(activityForm);
+    const title=f.get("title")?.trim();
+    if(!title){saitToast("Add an activity title first.");return}
+    const arr=getActivities();
+    arr.unshift({
+      title,
+      type:f.get("type")||"General",
+      date:f.get("date")||"",
+      proof:f.get("proof")||"",
+      status:"pending"
+    });
+    localStorage.setItem(storageKey,JSON.stringify(arr));
+    activityForm.reset();
+    renderActivities();
+    saitToast("Activity saved locally — ready for verification.");
+  });
   renderActivities();
-  showToast('Activity submitted to your local demo dashboard');
+
+  // Demo contact forms
+  document.querySelectorAll("form[data-demo-form]").forEach(form=>{
+    form.addEventListener("submit",e=>{
+      e.preventDefault();
+      form.reset();
+      saitToast("Thanks — your message was captured in this prototype.");
+    });
+  });
+
+  // Share / copy
+  document.querySelectorAll("[data-share]").forEach(btn=>{
+    btn.addEventListener("click",async()=>{
+      const url=location.href;
+      try{
+        if(navigator.share) await navigator.share({title:"SAIT CUSAT",url});
+        else await navigator.clipboard.writeText(url);
+        saitToast(navigator.share?"Share sheet opened.":"Link copied.");
+      }catch{}
+    });
+  });
 });
-renderActivities();
-
-// ---------------------------
-// Contact form UI
-// ---------------------------
-const contactForm = $('#contactForm');
-contactForm.addEventListener('submit', e => { e.preventDefault(); $('#contactSuccess').hidden=false; contactForm.reset(); showToast('Message captured locally — connect a backend for production'); });
-
-// ---------------------------
-// Notification center
-// ---------------------------
-$('#notifyButton').addEventListener('click', () => openModal('Notification Center', 'This prototype turns announcements into a focused feed. Connect it to a CMS, Firebase, Supabase or your preferred backend in the production version.'));
-
-// ---------------------------
-// Toast
-// ---------------------------
-const toast = $('#toast');
-let toastTimer;
-function showToast(message){
-  toast.textContent = message;
-  toast.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>toast.classList.remove('show'), 2800);
-}
-
-// ---------------------------
-// Hero parallax / card tilt
-// ---------------------------
-const heroStage = $('.hero-stage');
-const heroCore = $('.hero-core');
-heroStage.addEventListener('pointermove', e => {
-  if (window.innerWidth < 1000) return;
-  const r = heroStage.getBoundingClientRect();
-  const x = (e.clientX - r.left) / r.width - .5;
-  const y = (e.clientY - r.top) / r.height - .5;
-  heroCore.style.transform = `rotateY(${-7 + x*7}deg) rotateX(${y*-4}deg) rotateZ(${2.5 + x*1.2}deg) translate(${x*8}px,${y*8}px)`;
-});
-heroStage.addEventListener('pointerleave', ()=> heroCore.style.transform='rotateY(-7deg) rotateZ(2.5deg)');
-
-// Set today's date as a convenient default for the prototype
-const activityDate = $('#activityDate');
-if (activityDate) activityDate.valueAsDate = new Date();

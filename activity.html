@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080a0d">
+<meta name="description" content="SAIT — Student Association of Information Technology, CUSAT.">
+<title>Student Activity Logger · SAIT</title>
+<link rel="icon" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="activity">
+<div class="noise"></div><div class="grid-bg"></div>
+
+<header class="site-header">
+  <nav class="nav container">
+    <a class="brand" href="index.html" aria-label="SAIT home">
+      <img src="assets/logo.svg" alt="SAIT">
+      <span class="brand-text"><strong>SAIT</strong><small>CUSAT · IT</small></span>
+    </a>
+    <div class="nav-links">
+      <a data-page="home" href="index.html">Home</a>
+      <a data-page="about" href="about.html">About</a>
+      <a data-page="people" href="people.html">People</a>
+      <a data-page="events" href="events.html">Events</a>
+      <a data-page="placements" href="placements.html">Careers</a>
+      <a data-page="alumni" href="alumni.html">Alumni</a>
+      <a data-page="activity" href="activity.html">Activity</a>
+      <a data-page="more" href="notifications.html">Updates</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn" data-command-open title="Search">⌕</button>
+      <button class="icon-btn theme-icon" data-theme-toggle title="Theme">☀</button>
+      <span class="command-hint">⌘ K</span>
+      <a class="btn small primary" href="contact.html">Contact ↗</a>
+      <button class="menu-btn" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<main class="page-top">
+
+<section class="page-hero">
+  <div class="container page-hero-grid">
+    <div class="reveal"><div class="kicker">07 / ACTIVITY LOGGER</div><h1 class="display">Your work<br><span class="dim">should count.</span></h1><p>Log projects, workshops, volunteering, hackathons and other activity. This prototype stores entries locally in the browser and shows a simple pending/verified dashboard.</p></div>
+    <div class="page-hero-art reveal delay-1"><div class="big-num">07</div><div class="signal"><div class="kicker">LOCAL PROTOTYPE</div><h3>No backend required.</h3><p>Perfect for demonstrating the UX first. Connect the form to a real backend later.</p></div></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container activity-shell">
+    <form id="activityForm" class="form-card reveal">
+      <div class="kicker">SUBMIT ACTIVITY</div>
+      <h2 class="h3" style="margin-top:13px">Add a new record.</h2>
+      <div class="form-grid" style="margin-top:22px">
+        <div class="field full"><label>Activity title</label><input name="title" required placeholder="e.g. Hackathon / workshop / project"></div>
+        <div class="field"><label>Type</label><select name="type"><option>Hackathon</option><option>Workshop</option><option>Project</option><option>Competition</option><option>Volunteering</option><option>Other</option></select></div>
+        <div class="field"><label>Date</label><input name="date" type="date"></div>
+        <div class="field full"><label>Proof link</label><input name="proof" type="url" placeholder="https://..."></div>
+        <div class="field full"><label>Reflection / notes</label><textarea name="notes" placeholder="What did you build, learn or contribute?"></textarea></div>
+      </div>
+      <div class="form-foot"><div class="proof-note">Prototype behaviour: submitted entries are saved only in this browser and start as PENDING.</div><button class="btn primary" type="submit">Save activity ↗</button></div>
+    </form>
+
+    <div class="dashboard-card reveal delay-1">
+      <div class="dashboard-head"><div><div class="kicker">YOUR DASHBOARD</div><h2 class="h3" style="margin-top:13px">Participation pulse.</h2><p class="dim mini">Demo metric based on locally saved submissions.</p></div><div class="ring"><span id="activityRingValue">40%</span></div></div>
+      <div class="activity-list" id="activityList"></div>
+      <div style="margin-top:20px"><a class="btn small ghost" href="hall-of-fame.html">View achievements ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container split-banner reveal">
+    <div class="split-block"><div class="kicker">WHY IT HELPS</div><h3>One student profile.</h3><p>Later, the same activity records can power certificates, skill badges, a portfolio timeline or a personal “what I did at SAIT” page.</p></div>
+    <div class="split-block"><div class="kicker">NEXT STEP</div><h3>Connect a backend.</h3><p>Replace localStorage with Firebase, Supabase or a small REST API when the association wants real authentication and verification.</p></div>
+  </div>
+</section>
+</main>
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <a class="footer-brand" href="index.html"><img src="assets/logo.svg" alt=""><span class="brand-text"><strong>SAIT</strong><small>CUSAT · IT</small></span></a>
+      <p>Student Association of Information Technology, Division of Information Technology, School of Engineering, CUSAT.</p>
+      <div class="footer-socials">
+        <a href="https://in.linkedin.com/company/students-association-of-information-technology-sait-cusat" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+        <a href="https://soe.cusat.ac.in/soe_association.php?c=it" target="_blank" rel="noopener" aria-label="Official department">IT</a>
+        <a href="https://sait-opal.vercel.app/" target="_blank" rel="noopener" aria-label="Current website">↗</a>
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram placeholder">ig</a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="about.html">About the department</a><a href="people.html">Executive committee</a>
+      <a href="events.html">Events archive</a><a href="placements.html">Placements</a>
+      <a href="alumni.html">Alumni</a><a href="hall-of-fame.html">Hall of Fame</a>
+      <a href="activity.html">Activity logger</a><a href="notes.html">Notes & resources</a>
+      <a href="notifications.html">Notifications</a><a href="contact.html">Contact</a>
+    </div>
+    <div>
+      <div class="kicker">PROJECT NOTE</div>
+      <p>This competition prototype intentionally uses sample names, metrics and placeholder photography where official data was not supplied.</p>
+      <a class="btn small ghost" href="README.md">Build notes ↗</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 SAIT · Prototype</span><span>Designed as a student-first digital home.</span>
+  </div>
+</footer>
+
+<div class="command" id="command" aria-hidden="true">
+  <div class="command-bg" data-close-command></div>
+  <div class="command-box">
+    <div class="command-search"><span>⌕</span><input id="commandInput" autocomplete="off" placeholder="Jump to a page…"></div>
+    <div class="command-list" id="commandList"></div>
+  </div>
+</div>
+<div class="modal" id="modal"></div>
+<div class="toast" id="toast"></div>
+<script src="data.js"></script><script src="script.js"></script></body></html>
