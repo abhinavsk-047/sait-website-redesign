@@ -345,6 +345,116 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   renderActivities();
 
+  // Mini game: Campus Sprint
+  const gameBoard = document.querySelector("#gameBoard");
+  if (gameBoard) {
+    const cells = [...gameBoard.querySelectorAll(".game-cell")];
+    const scoreEl = document.querySelector("#gameScore");
+    const timeEl = document.querySelector("#gameTime");
+    const bestEl = document.querySelector("#gameBest");
+    const startBtn = document.querySelector("#gameStartBtn");
+    const gameMessage = document.querySelector("#gameMessage");
+    let score = 0;
+    let timeLeft = 20;
+    let bestScore = Number(localStorage.getItem("sait-campus-sprint-best") || "0");
+    let activeIndex = -1;
+    let timerId = null;
+    let spawnId = null;
+    let playing = false;
+
+    const clearBoard = () => {
+      cells.forEach(cell => {
+        cell.classList.remove("is-active", "hit", "miss");
+      });
+      activeIndex = -1;
+    };
+
+    const refreshBest = () => {
+      if (bestEl) bestEl.textContent = String(bestScore);
+    };
+
+    const setMessage = msg => {
+      if (gameMessage) gameMessage.textContent = msg;
+    };
+
+    const endGame = () => {
+      playing = false;
+      clearInterval(timerId);
+      clearTimeout(spawnId);
+      clearBoard();
+      if (score > bestScore) {
+        bestScore = score;
+        localStorage.setItem("sait-campus-sprint-best", String(bestScore));
+        refreshBest();
+      }
+      setMessage(score >= 12 ? "Nice run — that was campus-fast." : "Run ended. Hit start and chase a higher score.");
+    };
+
+    const randomTarget = () => {
+      if (!playing) return;
+      const nextIndex = Math.floor(Math.random() * cells.length);
+      activeIndex = nextIndex;
+      cells.forEach((cell, index) => {
+        cell.classList.toggle("is-active", index === nextIndex);
+      });
+      clearTimeout(spawnId);
+      spawnId = setTimeout(() => {
+        if (!playing || activeIndex !== nextIndex) return;
+        cells[nextIndex].classList.add("miss");
+        setTimeout(() => cells[nextIndex].classList.remove("miss"), 180);
+        score = Math.max(0, score - 1);
+        if (scoreEl) scoreEl.textContent = String(score);
+        activeIndex = -1;
+        randomTarget();
+      }, 700);
+    };
+
+    const startGame = () => {
+      if (playing) return;
+      score = 0;
+      timeLeft = 20;
+      playing = true;
+      if (scoreEl) scoreEl.textContent = "0";
+      if (timeEl) timeEl.textContent = String(timeLeft);
+      setMessage("Collect the glowing nodes.");
+      clearBoard();
+      clearInterval(timerId);
+      clearTimeout(spawnId);
+      timerId = setInterval(() => {
+        timeLeft -= 1;
+        if (timeEl) timeEl.textContent = String(timeLeft);
+        if (timeLeft <= 0) {
+          endGame();
+        }
+      }, 1000);
+      randomTarget();
+    };
+
+    cells.forEach(cell => {
+      cell.addEventListener("click", () => {
+        if (!playing) return;
+        const index = Number(cell.dataset.index);
+        if (index === activeIndex) {
+          score += 1;
+          if (scoreEl) scoreEl.textContent = String(score);
+          cell.classList.add("hit");
+          setTimeout(() => cell.classList.remove("hit"), 140);
+          activeIndex = -1;
+          clearTimeout(spawnId);
+          randomTarget();
+        } else {
+          score = Math.max(0, score - 1);
+          if (scoreEl) scoreEl.textContent = String(score);
+          cell.classList.add("miss");
+          setTimeout(() => cell.classList.remove("miss"), 160);
+        }
+      });
+    });
+
+    startBtn?.addEventListener("click", startGame);
+    refreshBest();
+  }
+
   // Demo contact forms
   document.querySelectorAll("form[data-demo-form]").forEach(form=>{
     form.addEventListener("submit",e=>{

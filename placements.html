@@ -81,6 +81,38 @@
     <article class="note-card reveal"><div class="icon">03</div><h3>Alumni bridge</h3><p>Short alumni spotlights can show what a real path looks like after graduation.</p><a href="alumni.html">Meet alumni ↗</a></article>
   </div>
 </section>
+
+<section class="section">
+  <div class="container">
+    <div class="game-shell reveal">
+      <div class="game-copy">
+        <div class="kicker">STUDENT LAB</div>
+        <h2 class="h2">Campus Sprint</h2>
+        <p>A tiny game prototype built by students to show how a club project can be playful, useful and memorable.</p>
+        <div class="game-status">
+          <div><span>Score</span><strong id="gameScore">0</strong></div>
+          <div><span>Timer</span><strong id="gameTime">20</strong>s</div>
+          <div><span>Best</span><strong id="gameBest">0</strong></div>
+        </div>
+        <button class="btn primary" id="gameStartBtn" type="button">Start run</button>
+      </div>
+      <div class="game-board-wrap">
+        <div class="game-board" id="gameBoard" aria-label="Mini game board">
+          <button class="game-cell" data-index="0" type="button" aria-label="Game tile 1"></button>
+          <button class="game-cell" data-index="1" type="button" aria-label="Game tile 2"></button>
+          <button class="game-cell" data-index="2" type="button" aria-label="Game tile 3"></button>
+          <button class="game-cell" data-index="3" type="button" aria-label="Game tile 4"></button>
+          <button class="game-cell" data-index="4" type="button" aria-label="Game tile 5"></button>
+          <button class="game-cell" data-index="5" type="button" aria-label="Game tile 6"></button>
+          <button class="game-cell" data-index="6" type="button" aria-label="Game tile 7"></button>
+          <button class="game-cell" data-index="7" type="button" aria-label="Game tile 8"></button>
+          <button class="game-cell" data-index="8" type="button" aria-label="Game tile 9"></button>
+        </div>
+        <div class="game-message" id="gameMessage">Click the glowing node before the timer ends.</div>
+      </div>
+    </div>
+  </div>
+</section>
 </main>
 <footer class="footer">
   <div class="container footer-grid">
