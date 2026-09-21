@@ -1,14 +1,39 @@
-# SAIT Website Redesign
+# SAIT Website Redesign — Competition Prototype
 
-A fresh responsive homepage concept for the SAIT Website Redesign Challenge.
+Advanced single-page redesign for the SAIT Website Redesign Challenge.
 
-## Run
-Open `index.html` directly in Chrome/Edge, or use VS Code Live Server.
+## What is included
 
-## Files
-- index.html — homepage structure/content
-- style.css — complete visual design and responsive layout
-- script.js — mobile menu, active navigation, theme switcher, reveal animations and event modal
+- Modern editorial + futuristic visual system
+- Responsive desktop/tablet/mobile layout
+- Dark/light theme with local persistence
+- Scroll progress + reveal animations
+- Animated statistics counters
+- Interactive mouse spotlight + 3D hero card tilt
+- Command palette search (Ctrl/Cmd + K)
+- Team filters
+- Event filters + event modal
+- Hall of Fame filters
+- Student Activity Logger with browser localStorage
+- Activity dashboard + progress ring + community leaderboard
+- Notification center modal
+- Contact form UI
+- Accessible keyboard interactions and reduced-motion support
+- Vanilla HTML/CSS/JS — no build step required
 
-## Before submission
-Replace demo event/team/placement content with the official SAIT information and add official SAIT assets/social links supplied by the organizers.
+## Run locally
+
+Open `index.html` directly, or use VS Code Live Server.
+
+## GitHub Pages
+
+Make sure `index.html` is at the repository root. Then enable:
+Settings → Pages → Deploy from a branch → main → / (root).
+
+## Final-submission checklist
+
+1. Replace prototype/mock metrics with official values.
+2. Replace sample alumni/team/event content with verified SAIT data.
+3. Add official SAIT/CUSAT logo assets if supplied by the organisers.
+4. Connect registration links, socials, event details and any backend functionality.
+5. Test on mobile, tablet and desktop before publishing.

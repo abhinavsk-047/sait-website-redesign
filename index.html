@@ -1,314 +1,297 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SAIT — Student Association of Information Technology, CUSAT">
-  <title>SAIT — Student Association of Information Technology</title>
+  <meta name="theme-color" content="#0a0c10">
+  <meta name="description" content="SAIT — Student Association of Information Technology, CUSAT. A digital home for students, events, careers, alumni and campus achievements.">
+  <title>SAIT — Build What’s Next</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <div class="noise"></div>
+  <div class="page-progress" id="pageProgress"></div>
+  <div class="cursor-glow" id="cursorGlow"></div>
+  <div class="site-grid" aria-hidden="true"></div>
 
-  <header class="site-header" id="top">
-    <nav class="nav container">
-      <a class="brand" href="#top" aria-label="SAIT home">
-        <span class="brand-mark" aria-hidden="true">
-          <span></span><span></span><span></span><span></span>
-        </span>
-        <span class="brand-text">
-          <strong>SAIT</strong>
-          <small>CUSAT · IT</small>
-        </span>
+  <header class="header" id="header">
+    <div class="container nav-shell">
+      <a href="#home" class="logo" aria-label="SAIT home">
+        <span class="logo-ring"><span class="logo-core">S</span></span>
+        <span class="logo-copy"><b>SAIT</b><small>CUSAT · INFORMATION TECHNOLOGY</small></span>
       </a>
 
-      <div class="nav-links" id="navLinks">
-        <a class="active" href="#top">Home</a>
+      <nav class="nav" id="primaryNav" aria-label="Primary navigation">
         <a href="#about">About</a>
+        <a href="#people">People</a>
         <a href="#events">Events</a>
-        <a href="#placements">Placements</a>
-        <a href="#team">Team</a>
-        <a href="#contact">Contact</a>
-      </div>
+        <a href="#careers">Careers</a>
+        <a href="#hall">Hall of Fame</a>
+        <a href="#activity">Activity</a>
+      </nav>
 
-      <div class="nav-actions">
-        <button class="icon-btn" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">◐</button>
-        <a class="nav-cta" href="#events">Explore SAIT <span>↗</span></a>
-        <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
-          <i></i><i></i>
-        </button>
+      <div class="nav-tools">
+        <button class="icon-button" id="searchButton" aria-label="Search" title="Search">⌕</button>
+        <button class="icon-button" id="themeButton" aria-label="Toggle theme" title="Toggle theme">☼</button>
+        <a class="small-cta" href="#contact">Join / Connect <span>↗</span></a>
+        <button class="menu-button" id="menuButton" aria-expanded="false" aria-controls="primaryNav" aria-label="Toggle menu"><i></i><i></i></button>
       </div>
-    </nav>
+    </div>
   </header>
 
   <main>
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-grid container">
-        <div class="hero-copy reveal">
-          <div class="eyebrow"><span class="pulse"></span> Student Association of Information Technology</div>
-          <h1>Build.<br><em>Connect.</em><br>Lead.</h1>
-          <p class="hero-description">
-            A student-driven community at CUSAT where ideas become projects,
-            curiosity becomes skill, and technology brings people together.
-          </p>
-          <div class="hero-buttons">
-            <a class="btn btn-primary" href="#events">Discover SAIT <span>↗</span></a>
-            <a class="btn btn-ghost" href="#about">Our story <span>↓</span></a>
+    <section class="hero section" id="home">
+      <div class="container hero-layout">
+        <div class="hero-copy">
+          <div class="status-chip reveal">
+            <span class="status-pulse"></span>
+            <span>STUDENT-LED · TECHNOLOGY · COMMUNITY</span>
           </div>
-          <div class="hero-meta">
-            <span><b>1995</b> IT at CUSAT</span>
-            <span class="meta-dot"></span>
-            <span><b>∞</b> Ideas in motion</span>
+
+          <div class="hero-kicker reveal delay-1">STUDENT ASSOCIATION OF INFORMATION TECHNOLOGY / CUSAT</div>
+          <h1 class="hero-title reveal delay-2">Build what’s<br><span>next.</span></h1>
+          <p class="hero-text reveal delay-3">
+            A digital space for students to discover opportunities, learn together,
+            ship ideas, celebrate achievements and stay in the loop.
+          </p>
+          <div class="hero-actions reveal delay-4">
+            <a href="#events" class="button button-accent">Explore SAIT <span>↗</span></a>
+            <button class="button button-quiet" id="commandHint">Search the site <kbd>⌘K</kbd></button>
+          </div>
+
+          <div class="hero-facts reveal delay-5">
+            <div><b data-counter="1995">0</b><span>Dept. history</span></div>
+            <div><b data-counter="6">0</b><span>Core pathways</span></div>
+            <div><b data-counter="∞">∞</b><span>Ideas in motion</span></div>
           </div>
         </div>
 
-        <div class="hero-art reveal">
-          <div class="orb orb-a"></div>
-          <div class="orb orb-b"></div>
-          <div class="hero-card card-main">
-            <div class="card-top">
-              <span>SAIT / 2026</span>
-              <span class="live-dot">● LIVE</span>
-            </div>
-            <div class="giant-sait">SAIT</div>
-            <div class="card-line"></div>
-            <p>Technology is better<br>when we build it together.</p>
-            <div class="card-footer">
-              <span>COCHIN UNIVERSITY OF<br>SCIENCE & TECHNOLOGY</span>
-              <span class="arrow-circle">↗</span>
-            </div>
+        <div class="hero-stage reveal delay-2" aria-label="Interactive SAIT visual">
+          <div class="hero-orbit orbit-a"></div>
+          <div class="hero-orbit orbit-b"></div>
+          <div class="hero-orbit orbit-c"></div>
+          <div class="hero-core">
+            <div class="core-top"><span>SAIT / 26</span><span class="live">● LIVE</span></div>
+            <div class="core-word">SAIT</div>
+            <div class="core-line"></div>
+            <div class="core-message">Learn loud.<br>Build together.</div>
+            <div class="core-bottom"><span>DIVISION OF INFORMATION TECHNOLOGY<br>SOE · CUSAT</span><span class="core-arrow">↗</span></div>
           </div>
-
-          <div class="floating-card float-event">
-            <span class="mini-label">UP NEXT</span>
-            <strong>Tech · Design · Community</strong>
-            <small>Workshops & student projects</small>
-          </div>
-
-          <div class="floating-card float-number">
-            <strong>01</strong>
-            <small>Student<br>community</small>
-          </div>
-
-          <div class="grid-cross cross-one">+</div>
-          <div class="grid-cross cross-two">+</div>
+          <div class="stage-badge badge-a"><span>01</span><b>DISCOVER</b><small>Events · Notes · People</small></div>
+          <div class="stage-badge badge-b"><span>02</span><b>BUILD</b><small>Projects · Activities</small></div>
+          <div class="stage-badge badge-c"><span>03</span><b>LAUNCH</b><small>Careers · Community</small></div>
+          <div class="stage-plus plus-a">+</div><div class="stage-plus plus-b">+</div>
         </div>
       </div>
 
-      <div class="scroll-note">SCROLL TO EXPLORE <span>↓</span></div>
-    </section>
-
-    <!-- MARQUEE -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee-track">
-        <span>TECHNOLOGY</span><b>✦</b><span>COMMUNITY</span><b>✦</b><span>CREATIVITY</span><b>✦</b>
-        <span>COLLABORATION</span><b>✦</b><span>LEADERSHIP</span><b>✦</b><span>TECHNOLOGY</span><b>✦</b>
-        <span>COMMUNITY</span><b>✦</b><span>CREATIVITY</span><b>✦</b>
-      </div>
-    </div>
-
-    <!-- ABOUT -->
-    <section class="section about" id="about">
-      <div class="container two-col">
-        <div class="section-heading reveal">
-          <span class="section-number">01 / ABOUT</span>
-          <h2>More than a<br><span>student body.</span></h2>
-        </div>
-        <div class="about-copy reveal">
-          <p class="lead">
-            SAIT is the student community of the Department of Information Technology,
-            CUSAT — a space for learning, making, sharing and growing together.
-          </p>
-          <p>
-            From workshops and magazines to technical projects and campus initiatives,
-            SAIT creates opportunities for students to move beyond the classroom and
-            explore the ever-changing world of technology.
-          </p>
-          <a class="text-link" href="#events">See what we're building <span>↗</span></a>
-        </div>
-      </div>
-
-      <div class="container stat-grid reveal">
-        <div class="stat"><strong>01</strong><span>Curiosity<br>first</span></div>
-        <div class="stat"><strong>02</strong><span>Learn by<br>doing</span></div>
-        <div class="stat"><strong>03</strong><span>Build with<br>others</span></div>
-        <div class="stat"><strong>04</strong><span>Lead the<br>future</span></div>
+      <div class="container hero-bottom-row reveal delay-5">
+        <span>SCROLL TO EXPLORE</span>
+        <div class="hero-line"></div>
+        <span>001 → 010</span>
       </div>
     </section>
 
-    <!-- EVENTS -->
+    <section class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>TECHNOLOGY</span><i>✦</i><span>CREATIVITY</span><i>✦</i><span>COMMUNITY</span><i>✦</i><span>LEADERSHIP</span><i>✦</i><span>CAREERS</span><i>✦</i><span>TECHNOLOGY</span><i>✦</i><span>CREATIVITY</span><i>✦</i><span>COMMUNITY</span><i>✦</i>
+      </div>
+    </section>
+
+    <section class="section about-section" id="about">
+      <div class="container">
+        <div class="section-heading split-heading reveal">
+          <div><span class="eyebrow">01 / ABOUT</span><h2>The student layer<br><em>of IT at CUSAT.</em></h2></div>
+          <p>Designed around the way students actually use a campus website: scan, discover, act, return.</p>
+        </div>
+
+        <div class="about-grid">
+          <article class="about-story glass-card reveal">
+            <span class="card-index">A / STORY</span>
+            <h3>From a student association to a digital campus layer.</h3>
+            <p>
+              The current SAIT site describes the IT Department as a hub for innovation and notes that
+              SAIT supports students through workshops, magazines and technical projects. This redesign
+              turns those same ideas into a clearer, more useful digital experience.
+            </p>
+            <div class="story-foot"><span>Founded / 1995</span><a href="#people">Meet the people ↗</a></div>
+          </article>
+
+          <div class="principles reveal">
+            <div class="principle"><span>01</span><div><h4>Vision</h4><p>Make technology feel accessible, social and worth exploring.</p></div></div>
+            <div class="principle"><span>02</span><div><h4>Mission</h4><p>Turn student curiosity into skills, projects, participation and opportunity.</p></div></div>
+            <div class="principle"><span>03</span><div><h4>Design rule</h4><p>Less hunting. More doing. Every important path is one interaction away.</p></div></div>
+          </div>
+        </div>
+
+        <div class="resource-row reveal">
+          <span class="resource-label">QUICK ACADEMIC ACCESS</span>
+          <a href="#activity">Notes <b>↗</b></a>
+          <a href="#careers">Placement Hub <b>↗</b></a>
+          <a href="#events">Events Calendar <b>↗</b></a>
+          <a href="#notifications">Announcements <b>↗</b></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section people-section" id="people">
+      <div class="container">
+        <div class="section-heading split-heading reveal">
+          <div><span class="eyebrow">02 / ASSOCIATION & PEOPLE</span><h2>People make<br><em>the signal.</em></h2></div>
+          <div class="heading-controls"><button class="filter-tab active" data-team-filter="all">All</button><button class="filter-tab" data-team-filter="tech">Tech</button><button class="filter-tab" data-team-filter="media">Media</button><button class="filter-tab" data-team-filter="events">Events</button><button class="filter-tab" data-team-filter="pr">PR</button></div>
+        </div>
+
+        <div class="people-grid" id="peopleGrid">
+          <article class="person-card reveal" data-team="tech"><div class="person-avatar avatar-dark"><span>TC</span><small>TECH</small></div><div class="person-meta"><span>01 / CORE TEAM</span><h3>Technical Collective</h3><p>Development · AI · Cybersecurity</p></div><button class="person-open" data-person="Technical Collective">View profile ↗</button></article>
+          <article class="person-card reveal" data-team="media"><div class="person-avatar avatar-lime"><span>MD</span><small>MEDIA</small></div><div class="person-meta"><span>02 / CORE TEAM</span><h3>Media Studio</h3><p>Design · Video · Visual systems</p></div><button class="person-open" data-person="Media Studio">View profile ↗</button></article>
+          <article class="person-card reveal" data-team="events"><div class="person-avatar avatar-violet"><span>EV</span><small>EVENTS</small></div><div class="person-meta"><span>03 / CORE TEAM</span><h3>Events Unit</h3><p>Workshops · Hackathons · Community</p></div><button class="person-open" data-person="Events Unit">View profile ↗</button></article>
+          <article class="person-card reveal" data-team="pr"><div class="person-avatar avatar-silver"><span>PR</span><small>PR</small></div><div class="person-meta"><span>04 / CORE TEAM</span><h3>Public Relations</h3><p>Outreach · Partnerships · Campus</p></div><button class="person-open" data-person="Public Relations">View profile ↗</button></article>
+        </div>
+      </div>
+    </section>
+
     <section class="section events-section" id="events">
       <div class="container">
-        <div class="section-top reveal">
-          <div>
-            <span class="section-number">02 / EVENTS</span>
-            <h2>Things are<br><span>happening.</span></h2>
-          </div>
-          <a class="text-link desktop-link" href="#contact">View all events <span>↗</span></a>
+        <div class="section-heading split-heading reveal">
+          <div><span class="eyebrow">03 / EVENTS & ACTIVITIES</span><h2>What’s<br><em>happening.</em></h2></div>
+          <div class="event-filters"><button class="filter-tab active" data-event-filter="all">All</button><button class="filter-tab" data-event-filter="tech">Tech</button><button class="filter-tab" data-event-filter="creative">Creative</button><button class="filter-tab" data-event-filter="community">Community</button></div>
         </div>
 
-        <div class="event-grid">
-          <article class="event-card featured reveal" data-category="tech">
-            <div class="event-image image-one">
-              <span class="event-tag">TECH</span>
-              <div class="event-symbol">⌘</div>
-            </div>
-            <div class="event-body">
-              <span class="event-date">01 · WORKSHOP</span>
-              <h3>Learn. Experiment.<br>Build something.</h3>
-              <p>Hands-on sessions that turn concepts into practical skills.</p>
-              <button class="event-link" data-event="Technical Workshop">Explore event ↗</button>
-            </div>
+        <div class="events-layout">
+          <article class="event-feature reveal" data-event-category="tech">
+            <div class="event-visual visual-tech"><span>FLAGSHIP / 01</span><strong>⌘</strong><small>Hands-on technology experiences</small></div>
+            <div class="event-info"><div><span>TECHNICAL WORKSHOP</span><h3>From concept<br>to prototype.</h3></div><p>Build-first sessions where students experiment with tools, ideas and real-world workflows.</p><button class="text-button event-open" data-event-name="Technical Workshop">View event ↗</button></div>
           </article>
-
-          <article class="event-card reveal" data-category="community">
-            <div class="event-image image-two">
-              <span class="event-tag">COMMUNITY</span>
-              <div class="event-symbol">✦</div>
-            </div>
-            <div class="event-body">
-              <span class="event-date">02 · INITIATIVE</span>
-              <h3>Ideas are better<br>when shared.</h3>
-              <p>Student-led initiatives, collaborations and campus moments.</p>
-              <button class="event-link" data-event="Community Initiative">Explore event ↗</button>
-            </div>
-          </article>
-
-          <article class="event-card reveal" data-category="creative">
-            <div class="event-image image-three">
-              <span class="event-tag">CREATIVE</span>
-              <div class="event-symbol">✳</div>
-            </div>
-            <div class="event-body">
-              <span class="event-date">03 · PROJECT</span>
-              <h3>Create without<br>limits.</h3>
-              <p>Design, code and creative projects made by students.</p>
-              <button class="event-link" data-event="Creative Project">Explore event ↗</button>
-            </div>
-          </article>
+          <div class="event-stack">
+            <article class="event-mini reveal" data-event-category="creative"><div class="mini-date"><b>02</b><span>CREATIVE</span></div><div><h3>Design systems<br>for campus.</h3><p>Creative sessions, showcases and collaborative experiments.</p></div><button class="circle-button event-open" data-event-name="Design Systems for Campus">↗</button></article>
+            <article class="event-mini reveal" data-event-category="community"><div class="mini-date"><b>03</b><span>COMMUNITY</span></div><div><h3>Meet. Share.<br>Build.</h3><p>Student-led community moments and peer learning.</p></div><button class="circle-button event-open" data-event-name="Meet Share Build">↗</button></article>
+            <article class="event-mini reveal" data-event-category="tech"><div class="mini-date"><b>04</b><span>ARCHIVE</span></div><div><h3>Past events,<br>one place.</h3><p>Browse the SAIT event archive by category and year.</p></div><button class="circle-button event-open" data-event-name="Event Archive">↗</button></article>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- PLACEMENTS -->
-    <section class="section placement-section" id="placements">
-      <div class="container placement-wrap">
-        <div class="placement-copy reveal">
-          <span class="section-number">03 / PLACEMENTS</span>
-          <h2>From campus<br>to <span>industry.</span></h2>
-          <p>
-            Explore placement highlights, career opportunities and the paths
-            our students take into the technology industry.
-          </p>
-          <a class="btn btn-light" href="#contact">Explore placements <span>↗</span></a>
-        </div>
-
-        <div class="placement-panel reveal">
-          <div class="placement-row">
-            <span>CAREER</span><strong>01</strong><span>Preparation</span>
-          </div>
-          <div class="placement-row">
-            <span>SKILLS</span><strong>02</strong><span>Practice</span>
-          </div>
-          <div class="placement-row">
-            <span>OPPORTUNITY</span><strong>03</strong><span>Connect</span>
-          </div>
-          <div class="placement-row">
-            <span>FUTURE</span><strong>04</strong><span>Launch</span>
-          </div>
-          <div class="placement-foot">Your next chapter starts here.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TEAM -->
-    <section class="section team-section" id="team">
+    <section class="section career-section" id="careers">
       <div class="container">
-        <div class="section-top reveal">
-          <div>
-            <span class="section-number">04 / THE PEOPLE</span>
-            <h2>Made by<br><span>students.</span></h2>
-          </div>
-          <p class="top-note">The people behind the ideas,<br>events and energy of SAIT.</p>
+        <div class="career-head reveal"><span class="eyebrow">04 / PLACEMENTS & CAREERS</span><h2>Move from<br><em>campus → industry.</em></h2><p>Mock metrics below are intentionally presentation data for the prototype. Replace them with official placement figures before final submission.</p></div>
+
+        <div class="metrics-grid">
+          <div class="metric-card reveal"><span>PLACEMENT RATE*</span><strong data-counter="92">0</strong><small>% prototype highlight</small></div>
+          <div class="metric-card reveal"><span>HIRING PARTNERS*</span><strong data-counter="34">0</strong><small>companies / sample</small></div>
+          <div class="metric-card reveal"><span>CAREER PATHS</span><strong data-counter="12">0</strong><small>roles / sample set</small></div>
+          <div class="metric-card reveal"><span>ALUMNI NETWORK</span><strong data-counter="1000">0</strong><small>+ / sample count</small></div>
         </div>
 
-        <div class="team-grid">
-          <div class="team-card reveal">
-            <div class="avatar avatar-one">SA</div>
-            <span>EXECUTIVE</span>
-            <h3>Student Leadership</h3>
-            <p>Ideas · Planning · Direction</p>
-          </div>
-          <div class="team-card reveal">
-            <div class="avatar avatar-two">IT</div>
-            <span>COMMUNITY</span>
-            <h3>Technical Teams</h3>
-            <p>Code · Build · Experiment</p>
-          </div>
-          <div class="team-card reveal">
-            <div class="avatar avatar-three">+</div>
-            <span>EVERYONE</span>
-            <h3>Students Like You</h3>
-            <p>Learn · Participate · Lead</p>
+        <div class="career-panel reveal">
+          <div class="panel-label">CAREER PATHWAYS</div>
+          <div class="career-list">
+            <div><span>SOFTWARE</span><strong>01</strong><p>Development · Full stack · Systems</p><b>↗</b></div>
+            <div><span>AI / DATA</span><strong>02</strong><p>ML · Analytics · Research</p><b>↗</b></div>
+            <div><span>SECURITY</span><strong>03</strong><p>Cybersecurity · Networks · Cloud</p><b>↗</b></div>
+            <div><span>DESIGN / PRODUCT</span><strong>04</strong><p>UX · Product · Strategy</p><b>↗</b></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="cta-section" id="contact">
-      <div class="container cta-inner reveal">
-        <span class="section-number">05 / STAY CONNECTED</span>
-        <h2>Have an idea?<br><em>Let's make it real.</em></h2>
-        <p>Join the community, follow what we're doing and be part of what's next.</p>
-        <div class="cta-actions">
-          <a class="btn btn-primary" href="mailto:sait@cusat.ac.in">Get in touch <span>↗</span></a>
-          <a class="btn btn-outline-light" href="#top">Back to top ↑</a>
+    <section class="section alumni-section" id="alumni">
+      <div class="container">
+        <div class="section-heading split-heading reveal"><div><span class="eyebrow">05 / ALUMNI</span><h2>Past the<br><em>campus edge.</em></h2></div><p>Spotlight profiles are prototype content. Replace with verified alumni data, graduation batch and achievements.</p></div>
+        <div class="alumni-carousel" id="alumniCarousel">
+          <article class="alumni-card reveal"><div class="alumni-top"><span>CLASS OF 2015</span><span>01 / 03</span></div><div class="alumni-monogram">AK</div><h3>Alumni Spotlight</h3><p>Product · Engineering · Entrepreneurship</p><footer><span>Technology leadership</span><button class="text-button">Read story ↗</button></footer></article>
+          <article class="alumni-card reveal"><div class="alumni-top"><span>CLASS OF 2018</span><span>02 / 03</span></div><div class="alumni-monogram lime">RM</div><h3>Alumni Spotlight</h3><p>AI · Data · Research</p><footer><span>Research & innovation</span><button class="text-button">Read story ↗</button></footer></article>
+          <article class="alumni-card reveal"><div class="alumni-top"><span>CLASS OF 2021</span><span>03 / 03</span></div><div class="alumni-monogram violet">NS</div><h3>Alumni Spotlight</h3><p>Design · Product · Startups</p><footer><span>Product & design</span><button class="text-button">Read story ↗</button></footer></article>
         </div>
       </div>
+    </section>
+
+    <section class="section hall-section" id="hall">
+      <div class="container">
+        <div class="section-heading split-heading reveal"><div><span class="eyebrow">06 / ACHIEVEMENTS & HALL OF FAME</span><h2>Proof that<br><em>ideas travel.</em></h2></div><div class="hall-tabs"><button class="filter-tab active" data-hall-filter="all">All</button><button class="filter-tab" data-hall-filter="hack">Hackathons</button><button class="filter-tab" data-hall-filter="academic">Academic</button><button class="filter-tab" data-hall-filter="paper">Papers</button></div></div>
+        <div class="hall-grid" id="hallGrid">
+          <article class="hall-card reveal" data-hall-category="hack"><span>HACK / 2026</span><strong>01</strong><h3>Campus Build Sprint</h3><p>Prototype achievement · sample entry</p><footer><span>Team of 3</span><b>↗</b></footer></article>
+          <article class="hall-card reveal" data-hall-category="academic"><span>ACADEMIC / 2025</span><strong>02</strong><h3>Research Showcase</h3><p>Academic achievement · sample entry</p><footer><span>Department event</span><b>↗</b></footer></article>
+          <article class="hall-card reveal" data-hall-category="paper"><span>PAPER / 2025</span><strong>03</strong><h3>Student Research Note</h3><p>Publication highlight · sample entry</p><footer><span>Peer-reviewed</span><b>↗</b></footer></article>
+          <article class="hall-card reveal" data-hall-category="hack"><span>TECH / 2024</span><strong>04</strong><h3>Open Innovation Prize</h3><p>Competition achievement · sample entry</p><footer><span>Open category</span><b>↗</b></footer></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section activity-section" id="activity">
+      <div class="container">
+        <div class="section-heading split-heading reveal"><div><span class="eyebrow">07 / STUDENT ACTIVITY LOGGER</span><h2>Turn activity<br><em>into proof.</em></h2></div><p>Designed as the central student utility: submit activities, attach proof links, track verification and surface participation.</p></div>
+
+        <div class="activity-shell">
+          <form class="activity-form glass-card reveal" id="activityForm">
+            <div class="form-head"><span>NEW ACTIVITY</span><small>LOCAL DEMO · SAVES IN BROWSER</small></div>
+            <label>Student name<input required id="studentName" name="studentName" placeholder="Your name"></label>
+            <div class="form-row"><label>Category<select id="activityCategory" name="category"><option>Technical</option><option>Academic</option><option>Community</option><option>Creative</option></select></label><label>Date<input required id="activityDate" name="date" type="date"></label></div>
+            <label>Activity title<input required id="activityTitle" name="title" placeholder="e.g. Hackathon, workshop, paper presentation"></label>
+            <label>Proof link<input id="proofLink" name="proof" type="url" placeholder="https://..."></label>
+            <label>Notes<textarea id="activityNotes" name="notes" rows="4" placeholder="What did you do? What was the outcome?"></textarea></label>
+            <button class="button button-accent" type="submit">Submit activity <span>↗</span></button>
+          </form>
+
+          <div class="activity-dashboard reveal">
+            <div class="dashboard-top"><div><span>MY DASHBOARD</span><strong id="activityCount">0</strong><small>submitted activities</small></div><div class="progress-ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="49" class="ring-bg"></circle><circle cx="60" cy="60" r="49" class="ring-progress" id="ringProgress"></circle></svg><b id="progressValue">0%</b></div></div>
+            <div class="activity-feed" id="activityFeed"><div class="empty-feed" id="emptyFeed"><span>✦</span><p>Your submitted activities will appear here.</p></div></div>
+            <div class="leaderboard"><div><span>COMMUNITY SIGNAL</span><b>Participation board</b></div><ol><li><span>01 · Student A</span><b>18</b></li><li><span>02 · Student B</span><b>15</b></li><li><span>03 · Student C</span><b>12</b></li></ol></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section notifications-section" id="notifications">
+      <div class="container notification-layout">
+        <div class="notification-copy reveal"><span class="eyebrow">08 / NOTIFICATIONS</span><h2>Never miss<br><em>the signal.</em></h2><p>Announcements, deadline reminders, event updates and department notices in one focused feed.</p><button class="button button-accent" id="notifyButton">Open notification center <span>↗</span></button></div>
+        <div class="notification-list reveal">
+          <article><span class="notice-type urgent">DEADLINE</span><div><h3>Website redesign submission</h3><p>Prototype reminder · sample notification</p></div><time>NOW</time></article>
+          <article><span class="notice-type">EVENT</span><div><h3>Technical workshop registration</h3><p>Seats open · sample notification</p></div><time>2H</time></article>
+          <article><span class="notice-type">ACADEMIC</span><div><h3>Notes & resources updated</h3><p>Module files added · sample notification</p></div><time>1D</time></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contact">
+      <div class="container contact-grid">
+        <div class="contact-intro reveal"><span class="eyebrow">09 / CONTACT & CONNECT</span><h2>Make the next<br><em>move.</em></h2><p>Have a question, a collaboration idea or an event proposal? Use the prototype form below.</p><div class="contact-meta"><div><span>LOCATION</span><b>Division of Information Technology<br>SOE · CUSAT</b></div><div><span>SOCIAL</span><b>@sait.cusat<br>Campus community / 2026</b></div></div></div>
+        <form class="contact-form glass-card reveal" id="contactForm"><label>Name<input required placeholder="Your name"></label><label>Email<input required type="email" placeholder="you@example.com"></label><label>Message<textarea required rows="7" placeholder="Tell SAIT what you're thinking..."></textarea></label><button class="button button-light" type="submit">Send message <span>↗</span></button><p class="form-success" id="contactSuccess" hidden>Thanks — this prototype captured your message locally.</p></form>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="container final-cta-inner reveal"><span class="eyebrow">10 / ENDLESS POSSIBILITY</span><h2>Build what’s next.<br><em>Together.</em></h2><a href="#home" class="button button-dark">Back to top ↑</a></div>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="container footer-grid">
-      <div>
-        <div class="brand footer-brand">
-          <span class="brand-mark"><span></span><span></span><span></span><span></span></span>
-          <span class="brand-text"><strong>SAIT</strong><small>CUSAT · IT</small></span>
-        </div>
-        <p>Student Association of Information Technology<br>Cochin University of Science & Technology</p>
-      </div>
-      <div class="footer-links">
-        <a href="#about">About</a>
-        <a href="#events">Events</a>
-        <a href="#placements">Placements</a>
-        <a href="#team">Team</a>
-      </div>
-      <div class="footer-right">
-        <span>© 2026 SAIT</span>
-        <a href="#top">↑ Top</a>
-      </div>
-    </div>
+    <div class="container footer-top"><div><a href="#home" class="logo"><span class="logo-ring"><span class="logo-core">S</span></span><span class="logo-copy"><b>SAIT</b><small>CUSAT · INFORMATION TECHNOLOGY</small></span></a><p>Student Association of Information Technology<br>Division of Information Technology, SOE, CUSAT</p></div><div class="footer-nav"><a href="#about">About</a><a href="#events">Events</a><a href="#careers">Careers</a><a href="#activity">Activity</a><a href="#contact">Contact</a></div></div>
+    <div class="container footer-bottom"><span>© 2026 SAIT · Prototype redesign</span><span>Built with HTML · CSS · JavaScript</span></div>
   </footer>
 
-  <div class="modal" id="eventModal" aria-hidden="true">
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <button class="modal-close" data-close aria-label="Close">×</button>
-      <span class="section-number">SAIT / EVENT</span>
-      <h2 id="modalTitle">Event</h2>
-      <p>
-        This is a demo interaction for the redesign. Connect this card to
-        the real SAIT event data when the final content is available.
-      </p>
-      <a class="btn btn-primary" href="#contact" data-close>Get updates <span>↗</span></a>
+  <div class="modal-layer" id="modalLayer" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-window" role="dialog" aria-modal="true" aria-labelledby="modalHeading">
+      <button class="modal-x" data-close-modal aria-label="Close">×</button>
+      <span class="eyebrow">INTERACTIVE PREVIEW</span>
+      <h2 id="modalHeading">Event details</h2>
+      <p id="modalBody">This interactive card is ready to be connected to your real SAIT content.</p>
+      <div class="modal-rule"></div>
+      <a class="button button-accent" href="#contact" data-close-modal>Get updates <span>↗</span></a>
     </div>
   </div>
+
+  <div class="command-layer" id="commandLayer" aria-hidden="true">
+    <div class="command-backdrop" data-close-command></div>
+    <div class="command-box" role="dialog" aria-modal="true" aria-label="Site search">
+      <div class="command-search"><span>⌕</span><input id="commandInput" autocomplete="off" placeholder="Search SAIT sections, tools or pages..."><kbd>ESC</kbd></div>
+      <div class="command-results" id="commandResults"></div>
+      <div class="command-foot"><span>↑↓ Navigate</span><span>Enter Open</span><span>Esc Close</span></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="script.js"></script>
 </body>
